@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NailFlow — Gestão Nail Designer</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <aside class="sidebar">
+    <div class="brand"><span>♡</span> NailFlow</div>
+    <p class="subtitle">Gestão para Nail Designer</p>
+    <nav>
+      <button class="nav-btn active" data-page="inicio">⌂ Início</button>
+      <button class="nav-btn" data-page="agenda">◷ Agenda</button>
+      <button class="nav-btn" data-page="clientes">♙ Clientes</button>
+      <button class="nav-btn" data-page="precificacao">◇ Precificação</button>
+      <button class="nav-btn" data-page="materiais">▦ Materiais</button>
+    </nav>
+    <div class="side-note">Seus dados ficam salvos neste navegador.</div>
+  </aside>
+
+  <main class="main">
+    <header class="topbar">
+      <div>
+        <h1 id="page-title">Início</h1>
+        <p id="page-subtitle">Controle seu atendimento em um só lugar.</p>
+      </div>
+      <button class="primary" onclick="openAppointmentModal()">+ Novo agendamento</button>
+    </header>
+
+    <section id="inicio" class="page active">
+      <div class="cards">
+        <div class="stat"><span>Hoje</span><strong id="todayCount">0</strong><small>agendamentos</small></div>
+        <div class="stat"><span>Clientes</span><strong id="clientCount">0</strong><small>cadastradas</small></div>
+        <div class="stat"><span>Materiais</span><strong id="materialCount">0</strong><small>cadastrados</small></div>
+        <div class="stat"><span>Próximos</span><strong id="nextCount">0</strong><small>atendimentos</small></div>
+      </div>
+
+      <div class="grid-2">
+        <div class="panel">
+          <div class="panel-head"><h2>Próximos atendimentos</h2><button class="link" onclick="showPage('agenda')">Ver agenda</button></div>
+          <div id="homeAppointments" class="list"></div>
+        </div>
+        <div class="panel">
+          <div class="panel-head"><h2>Acesso rápido</h2></div>
+          <div class="quick">
+            <button onclick="openAppointmentModal()">📅 Novo atendimento</button>
+            <button onclick="showPage('precificacao')">🧮 Calcular preço</button>
+            <button onclick="openClientModal()">👤 Nova cliente</button>
+            <button onclick="openMaterialModal()">📦 Novo material</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="agenda" class="page">
+      <div class="toolbar">
+        <input id="agendaSearch" placeholder="Pesquisar cliente..." oninput="renderAgenda()">
+        <button class="primary" onclick="openAppointmentModal()">+ Agendamento</button>
+      </div>
+      <div id="agendaList" class="appointment-list"></div>
+    </section>
+
+    <section id="clientes" class="page">
+      <div class="toolbar">
+        <input id="clientSearch" placeholder="Pesquisar cliente..." oninput="renderClients()">
+        <button class="primary" onclick="openClientModal()">+ Cliente</button>
+      </div>
+      <div id="clientList" class="client-grid"></div>
+    </section>
+
+    <section id="precificacao" class="page">
+      <div class="grid-2">
+        <div class="panel">
+          <div class="panel-head"><h2>Calculadora</h2></div>
+          <label>Serviço principal</label>
+          <select id="calcService" onchange="calculatePrice()"></select>
+          <label>Quantidade de unhas</label>
+          <input id="calcNails" type="number" min="1" max="20" value="10" oninput="calculatePrice()">
+          <label>Esmaltação</label>
+          <select id="calcPolish" onchange="calculatePrice()">
+            <option value="0">Sem esmaltação</option>
+            <option value="10">Esmaltação comum — + R$ 10</option>
+            <option value="20">Esmaltação em gel — + R$ 20</option>
+          </select>
+          <label>Decoração</label>
+          <select id="calcDecoration" onchange="calculatePrice()">
+            <option value="0">Sem decoração</option>
+            <option value="7">Decoração simples — + R$ 7</option>
+            <option value="20">Decoração elaborada — + R$ 20</option>
+            <option value="12">Pedrarias — + R$ 12</option>
+          </select>
+          <label>Extras</label>
+          <input id="calcExtras" type="number" min="0" step="1" value="0" oninput="calculatePrice()">
+          <div class="price-box"><small>Preço sugerido</small><strong id="calcResult">R$ 0,00</strong></div>
+          <p class="hint">A calculadora usa os valores médios cadastrados. Você pode editar os serviços abaixo.</p>
+        </div>
+
+        <div class="panel">
+          <div class="panel-head"><h2>Serviços e valores</h2><button class="primary small" onclick="openServiceModal()">+ Serviço</button></div>
+          <div id="serviceList" class="service-list"></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="materiais" class="page">
+      <div class="toolbar">
+        <input id="materialSearch" placeholder="Pesquisar material..." oninput="renderMaterials()">
+        <button class="primary" onclick="openMaterialModal()">+ Material</button>
+      </div>
+      <div id="materialList" class="material-grid"></div>
+    </section>
+  </main>
+
+  <div id="modal" class="modal hidden">
+    <div class="modal-card">
+      <button class="close" onclick="closeModal()">×</button>
+      <div id="modalContent"></div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
